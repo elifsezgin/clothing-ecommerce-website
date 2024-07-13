@@ -1,8 +1,5 @@
-import { useEffect, useState } from 'react'
-import { auth, signInWithGooglePopup, createUserDocumentFromAuth, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebaseUtils'
-import {
-    getRedirectResult
-} from 'firebase/auth'
+import { useState, useContext } from 'react'
+import { signInWithGooglePopup, createUserDocumentFromAuth, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebaseUtils'
 import Button from '../../components/button/Button'
 import FormInput from '../form-input/FormInput'
 
@@ -17,17 +14,6 @@ const SignInForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password} = formFields;
 
-    useEffect(() => {
-        const fnc = async () => {
-            const response = await getRedirectResult(auth);
-            if (response) {
-                const userDocRef = await createUserDocumentFromAuth(response.user);
-                console.log(userDocRef)
-            }
-        }
-        fnc()
-    }, [])
-
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormFields({...formFields, [name]: value})
@@ -36,8 +22,7 @@ const SignInForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await signInAuthUserWithEmailAndPassword(email, password);
-            console.log(response)
+            await signInAuthUserWithEmailAndPassword(email, password);
             resetFormFields();
         } catch (error) {
             if (error.code === 'auth/invalid-credential') {
@@ -52,9 +37,7 @@ const SignInForm = () => {
     }
 
     const signInWithGoogle = async () => {
-        const {user} = await signInWithGooglePopup();
-        const userDocRef = await createUserDocumentFromAuth(user)
-        console.log(userDocRef)
+        await signInWithGooglePopup();
     }
     return <div className='sign-in-form-container'>
         <h2>Already have an account?</h2>
