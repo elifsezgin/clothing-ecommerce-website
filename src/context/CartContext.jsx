@@ -1,5 +1,4 @@
-import { createContext, useContext, useMemo, useState } from "react";
-import { ProductsContext } from "./ProductsContext";
+import { createContext, useMemo, useState } from "react";
 
 export const CartContext = createContext({
     isCartOpen: false,
@@ -7,7 +6,9 @@ export const CartContext = createContext({
     cartItems: [],
     addToCart: () => {},
     removeFromCart: () => {},
-    count: 0
+    removeAllFromCart: () => {},
+    count: 0,
+    totalPrice: 0,
 })
 
 
@@ -17,6 +18,8 @@ export const CartProvider = ({children}) => {
     const [cartItems, setCartItems] = useState([]);
 
     const count = useMemo(() => cartItems.reduce((total, item) => total + item.quantity, 0), [cartItems])
+    const totalPrice = useMemo(() => cartItems.reduce((total, item) => total + item.price * item.quantity, 0), [cartItems])
+
     const toggleCartDropdown = () => {
         setIsCartOpen(!isCartOpen);
     }
@@ -40,8 +43,12 @@ export const CartProvider = ({children}) => {
         const updatedCartItems = removeItemFromCart(product)
         setCartItems(updatedCartItems)
     }
+    const removeAllFromCart = (product) => {
+        const updatedCartItems = cartItems.filter(item => item.id !== product.id);
+        setCartItems(updatedCartItems)
+    }
     
-    const value = {isCartOpen, toggleCartDropdown, addToCart, removeFromCart, cartItems, count};
+    const value = {isCartOpen, toggleCartDropdown, addToCart, removeFromCart, removeAllFromCart, cartItems, count, totalPrice};
     return <CartContext.Provider value={value}>
         {children}
     </CartContext.Provider>
