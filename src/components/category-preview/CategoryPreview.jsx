@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import './CategoryPreview.styles.scss';
+import { CategoryPreviewContainer, Preview, Title } from './CategoryPreview.styles';
 import ProductCard from '../product-card/ProductCard';
 
 const CategoryPreview = ({title, products }) => {
@@ -9,14 +9,13 @@ const CategoryPreview = ({title, products }) => {
     const navigateHandler = () => {
         navigate(`/shop/${title.toLowerCase()}`);
     }
-    return <div key={title} className='category-preview-container'>
-    <h2 className='title' onClick={navigateHandler}><span>{title.toUpperCase()}</span></h2>
-    <div className='preview'>
-        {products.slice(0, 4).map(data => 
-            <ProductCard key={data.id} product={data} />)}
-    </div>
-
-</div>
+    return <CategoryPreviewContainer>
+        <Title onClick={navigateHandler}><span>{title.toUpperCase()}</span></Title>
+        <Preview>
+            {products.slice(0, 4).map(data => 
+                <ProductCard key={data.id} product={data} />)}
+        </Preview>
+    </CategoryPreviewContainer>
 }
 
 export default CategoryPreview;

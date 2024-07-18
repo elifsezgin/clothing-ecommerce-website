@@ -1,9 +1,9 @@
-import { useState, useContext } from 'react'
-import { signInWithGooglePopup, createUserDocumentFromAuth, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebaseUtils'
+import { useState } from 'react'
+import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebaseUtils'
 import Button from '../../components/button/Button'
 import FormInput from '../form-input/FormInput'
 
-import './SignInForm.styles.scss';
+import {ButtonsContainer, SignInFormContainer} from './SignInForm.styles';
 
 const defaultFormFields = {
     email: '',
@@ -39,19 +39,19 @@ const SignInForm = () => {
     const signInWithGoogle = async () => {
         await signInWithGooglePopup();
     }
-    return <div className='sign-in-form-container'>
+    return <SignInFormContainer>
         <h2>Already have an account?</h2>
-        <span className="">Sign in with your email and password</span>
+        <span>Sign in with your email and password</span>
         <form onSubmit={handleSubmit}>
             <FormInput name='email' type='text' value={email} label='Email' onChange={handleChange} required />
             <FormInput name='password' type='password' value={password} label='Password' onChange={handleChange} required />
-            <div className='buttons-container'>
+            <ButtonsContainer>
                 <Button type='submit'>Sign in</Button>
                 <Button type='button' buttonType='google' onClick={signInWithGoogle}>Google sign in</Button>
-            </div>
+            </ButtonsContainer>
         </form>
         {/* <Button onClick={signInWithGoogleRedirect}>Sign in with Google Redirect</Button> */}
-    </div>
+    </SignInFormContainer>
 }
 
 export default SignInForm;

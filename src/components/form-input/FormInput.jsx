@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import './FormInput.styles.scss';
 
 
