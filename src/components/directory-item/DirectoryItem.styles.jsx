@@ -5,6 +5,7 @@ export const BackgroundImage = styled.div`
   height: 100%;
   background-size: cover;
   background-position: center;
+  background-image: ${({ imageUrl }) => `url(${imageUrl})`};
 `;
 
 export const DirectoryItemBody = styled.div`
@@ -57,9 +58,10 @@ export const Title = styled.h2`
   margin: 0 6px 0;
   font-size: 22px;
   color: #4a4a4a;
+  text-transform: uppercase;
 `;
 
 export const P = styled.p`
-font-weight: lighter;
-font-size: 16px;
+  font-weight: lighter;
+  font-size: 16px;
 `;
