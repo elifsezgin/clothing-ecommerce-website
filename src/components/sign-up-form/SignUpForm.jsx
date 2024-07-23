@@ -4,6 +4,8 @@ import FormInput from "../form-input/FormInput";
 import Button from "../button/Button"
 
 import {SignUpFormContainer} from './SignUpForm.styles';
+import { useDispatch } from "react-redux";
+import { signUpStart } from "../../store/user/userActions";
 
 const defaultFormFields = {
     displayName: '',
@@ -13,6 +15,7 @@ const defaultFormFields = {
 }
 
 const SignUpForm = () => {
+    const dispatch = useDispatch();
     const [formFields, setFormFields] = useState(defaultFormFields)
     const { displayName, email, password, confirmPassword } = formFields;
 
@@ -27,16 +30,12 @@ const SignUpForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(e)
         if (password !== confirmPassword) {
             alert('Passwords do not match.')
             return;
         }
         try {
-            const response = await createAuthUserWithEmailAndPassword(email, password)
-            if (response) {
-                await createUserDocumentFromAuth(response.user, {displayName});
-            }
+            dispatch(signUpStart(email, password, displayName))
             resetFormFields()
         } catch (error) {
             if (error.code === "auth/email-already-in-use") {
